@@ -26,9 +26,44 @@ myObject.double = function() {
 };
 
 myObject.double();
-document.write(myObject.value);
+document.writeln(myObject.value);
 
 var Quo = function (string) {
 	this.status = string;
 };
 
+Quo.prototype.get_status = function() {
+	return this.status;
+};
+
+var myQuo = new Quo("Confued");
+document.writeln(myQuo.get_status());
+
+var array = [3,4];
+document.writeln(add.apply(null,array));
+
+var statusObject = {
+	status : "A-OK"
+};
+
+document.writeln(Quo.prototype.get_status.apply(statusObject));
+
+var sum = function () {
+	var i, sum = 0;
+	for (i = 0; i < arguments.length; i++) {
+	sum += arguments[i];
+	}
+	return sum;
+};
+
+document.writeln(sum(4, 8, 15, 16, 23, 42));
+
+var add = function (a, b) {
+	 if (typeof a !== 'number' || typeof b !== 'number') {
+		throw {
+		name : 'TypeError',
+		message : 'add needs numbers'
+		};
+	 };
+	 return a + b;
+}
