@@ -96,3 +96,126 @@ String.method('trim', function() {
 });
 
 document.writeln('"' + "    neat    ".trim() + '"');
+
+var haoni = function (disc, src, aux, dst) {
+	if (disc > 0) {
+		haoni(disc - 1, src, dst, aux);
+		document.writeln('Move disc ' + disc + ' from ' + src + ' to ' + dst);
+		haoni(disc - 1, aux, src, dst);
+	}
+};
+
+haoni(3, 'Src', 'Aux', 'Dst');
+
+var walk_the_DOM = function walk(node, func) {
+	func(node);
+	node = node.firstChild;
+	while (node) {
+		walk(node, func);
+		node = node.nextSibling;
+	}
+};
+var getElementsByAttribute = function(attr, value) {
+	var results = [];
+	
+	walk_the_DOM(document.body, function (node) {
+		var actual = node.nodeType === 1 && node.getAttribute(attr);
+		if (typeof actual === 'string' && 
+		      (actual === value || typeof value !== 'string')) 
+		{
+		      	results.push(node);
+		}
+	});
+	return results;
+};
+
+var res = getElementsByAttribute("class", "test");
+
+/*
+for (i = 0; i < res.length; i++) {
+	document.writeln(res[i].nodeName);
+}
+*/
+// res = ["first",2,3,4,5,6];
+for (i in res) {
+	document.writeln(res[i].nodeName);
+}
+
+var factorial = function factorial(i, a) {
+	// document.writeln(a);
+	a = a || 1;
+	// document.writeln(a);
+	if (i < 2) {
+		return a;
+	}
+	return factorial(i - 1, a * i);
+};
+
+document.writeln(factorial(4));
+
+var foo = function () {
+	var a = 3, b = 5;
+	var bar = function () {
+		var b = 7, c = 11;
+		a += b + c;
+	};
+	bar();
+};
+
+var myObject = function () {
+	var value = 0;
+	return {
+		increment : function (inc) {
+			value += typeof inc === 'number' ? inc : 1;
+		},
+		getValue : function () {
+			return value;
+		}
+	}
+}();
+
+myObject.increment(2);
+document.writeln(myObject.getValue());
+
+var quo = function (status) {
+	return {
+		get_status : function () {
+			return status;
+		}
+	};
+};
+
+var myQuo = quo("amazed");
+document.writeln(myQuo.get_status());
+
+var fade = function (node) {
+	var level = 1;
+	var step = function () {
+		var hex = level.toString(16);
+		node.style.backgroundColor = '#FFFF' + hex + hex;
+		if (level < 15) {
+			level += 1;
+			setTimeout(step, 100);
+		}
+	};
+	setTimeout(step, 100);
+};
+
+fade(document.body);
+
+var add_the_handlers = function (nodes) {
+	var i;
+	for (i = 0; i < nodes.length; i++) {
+			/* nodes[i].onclick = function(e) {
+			alert(i);
+			*/
+			nodes[i].onclick = function (i) {
+				return function (e) {
+					alert(i + " " + e);
+				};
+			}(i);
+	}
+};
+
+add_the_handlers(getElementsByAttribute("class", "test"));
+	      
